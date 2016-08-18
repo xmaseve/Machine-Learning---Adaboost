@@ -8,33 +8,12 @@ Created on Tue Aug 16 21:00:12 2016
 import numpy as np
 import pandas as pd
 
-train = pd.read_csv('C:/Users/YI/Downloads/train.csv')
-train = train.set_index('PassengerId')
-train.info()
-train.drop(['Name', 'Ticket', 'Cabin','Fare'], axis=1, inplace=True)
-train = train.fillna(train.mean())
-train = train.fillna(train.Embarked.value_counts().index[0])
-cutpoint = [0,15,30,60,100]
-grouplabel = [0,1,2,3]
-cateAge = pd.cut(train.Age, cutpoint, labels=grouplabel)
-train['Age'] = cateAge
-
-newtrain = pd.get_dummies(train)
-dummyPclass = pd.get_dummies(train.Pclass, prefix='Pclass')
-newtrain = pd.concat([newtrain, dummyPclass], axis=1)
-newtrain.drop(['Pclass'], axis=1, inplace=True)
-
-label = newtrain['Survived']
-label = label.values.tolist()
-newtrain.drop(['Survived'], axis=1, inplace=True)
-dataset = newtrain.values.tolist()
 
 def loaddata():
     datamat = np.matrix([[1.,2.1], [2.,1.1], [1.3,1.], [1.,1.], [2.,1.]])
     classlabels = [1.,1.,-1.,-1,1.]
     return datamat, classlabels
-    
-dataset, label = loaddata()    
+
 
 # Building weak stump function
 def buildWeakStump(dataset,label,D):
